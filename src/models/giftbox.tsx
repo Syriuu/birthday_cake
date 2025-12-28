@@ -52,7 +52,7 @@ export function GiftBox({ onOpen, ...props }: GiftBoxProps) {
   const currentScaleRef = useRef(1);
 
   // --- ANIMATION LOOP (Chạy mỗi khung hình) ---
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     // 1. Xác định mục tiêu: Mở thì về 0, Đóng thì là 1
     const targetScale = isOpen ? 0 : 1;
 

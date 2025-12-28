@@ -30,7 +30,7 @@ export function GiftCard({ image, isEnabled, ...props }: GiftCardProps) {
   const targetQuat = useMemo(() => new THREE.Quaternion(), []);
 
   // --- LOGIC DI CHUYỂN ---
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     if (!groupRef.current) return;
     const card = groupRef.current;
     const parent = card.parent;
