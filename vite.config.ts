@@ -10,4 +10,10 @@ export default defineConfig({
       },
     }),
   ],
+  // 👇 THÊM PHẦN NÀY ĐỂ FIX LỖI VERCEL VÀ ẨN CODE
+  build: {
+    outDir: 'build',   // Đổi tên thư mục xuất ra từ 'dist' thành 'build' cho Vercel hiểu
+    sourcemap: false,  // Tắt tạo file map để ẩn source code
+    minify: 'esbuild', // Nén code gọn nhẹ
+  },
 })
