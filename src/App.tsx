@@ -1,5 +1,4 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-// 👇 Import FlyControls cho phép bay tự do
 import { Environment, FlyControls } from "@react-three/drei";
 import {
   Suspense,
@@ -17,6 +16,7 @@ import { Table } from "./models/table";
 import { PictureFrame } from "./models/pictureFrame";
 import { Fireworks } from "./components/Fireworks";
 import { BirthdayCard } from "./components/BirthdayCard";
+import { GiftBox } from "./models/giftbox";
 
 import "./App.css";
 
@@ -58,7 +58,7 @@ const totalAnimationTime = CANDLE_DROP_START + CANDLE_DROP_DURATION;
 
 // --- CẤU HÌNH VỊ TRÍ XUẤT PHÁT CỦA CAMERA ---
 // Đặt camera đối diện bàn, vừa tầm mắt
-const CAMERA_START_POS = new Vector3(0, 1.5, 4); 
+const CAMERA_START_POS = new Vector3(5, 2.0, 4); 
 const CAMERA_LOOK_AT = new Vector3(0, 0.8, 0);
 
 const BACKGROUND_FADE_DURATION = 1;
@@ -276,14 +276,19 @@ function AnimatedScene({
         <PictureFrame
           image="/frame4.jpg"
           position={[-1.5, 0.735, 2.5]}
-          rotation={[0, 5.4, 0]}
+          rotation={[0, 5.2, 0]}
           scale={0.75}
         />
         <PictureFrame
           image="/frame1.jpg"
           position={[-1.5, 0.735, -2.5]}
-          rotation={[0, 4.2, 0]}
+          rotation={[0, 4.5, 0]}
           scale={0.75}
+        />
+        <GiftBox 
+          position={[2.5, -0.0045, 3]} 
+          rotation={[0, -1.5, 0]}   
+          scale={0.005}              
         />
         {cards.map((card) => (
           <BirthdayCard

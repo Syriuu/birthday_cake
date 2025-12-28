@@ -12,11 +12,11 @@ import {
   DoubleSide,
 } from "three";
 
+
 type PictureFrameProps = ThreeElements["group"] & {
   image: string;
   imageScale?: number | [number, number];
   imageOffset?: [number, number, number];
-  imageInset?: number;
 };
 
 const DEFAULT_IMAGE_SCALE: [number, number] = [0.82, 0.82];
@@ -25,7 +25,6 @@ export function PictureFrame({
   image,
   imageScale = DEFAULT_IMAGE_SCALE,
   imageOffset,
-  imageInset = 0.01,
   children,
   ...groupProps
 }: PictureFrameProps) {
@@ -99,7 +98,7 @@ export function PictureFrame({
       <mesh position={imagePosition} rotation={[0.435, Math.PI, 0]} material={pictureMaterial}>
         <planeGeometry args={[imageWidth, imageHeight]} />
       </mesh>
-      {children}
+      {children}w
       </group>
     </group>
   );
