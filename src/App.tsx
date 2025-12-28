@@ -17,6 +17,7 @@ import { PictureFrame } from "./models/pictureFrame";
 import { Fireworks } from "./components/Fireworks";
 import { BirthdayCard } from "./components/BirthdayCard";
 import { GiftBox } from "./models/giftbox";
+import { GiftCard } from "./models/giftcard"; // <-- 1. Đã thêm Import
 
 import "./App.css";
 
@@ -57,7 +58,6 @@ const CANDLE_DROP_START =
 const totalAnimationTime = CANDLE_DROP_START + CANDLE_DROP_DURATION;
 
 // --- CẤU HÌNH VỊ TRÍ XUẤT PHÁT CỦA CAMERA ---
-// Đặt camera đối diện bàn, vừa tầm mắt
 const CAMERA_START_POS = new Vector3(5, 2.0, 4); 
 const CAMERA_LOOK_AT = new Vector3(0, 0.8, 0);
 
@@ -120,6 +120,9 @@ function AnimatedScene({
   const completionNotifiedRef = useRef(false);
   const backgroundOpacityRef = useRef(1);
   const environmentProgressRef = useRef(0);
+
+  // <-- 2. Thêm state quản lý việc mở hộp quà TẠI ĐÂY
+  const [isGiftOpen, setIsGiftOpen] = useState(false);
 
   useEffect(() => {
     onBackgroundFadeChange?.(backgroundOpacityRef.current);
@@ -285,11 +288,25 @@ function AnimatedScene({
           rotation={[0, 4.5, 0]}
           scale={0.75}
         />
-        <GiftBox 
+        
+        {/* === CỤM QUÀ TẶNG (Đã sửa lại cho gọn và đúng logic) === */}
+        <group 
           position={[2.5, -0.0045, 3]} 
           rotation={[0, -1.5, 0]}   
-          scale={0.005}              
-        />
+          scale={0.005}
+        >
+          {/* Hộp quà: Thêm sự kiện onOpen để set state */}
+          <GiftBox onOpen={() => setIsGiftOpen(true)} />
+          
+          {/* Tấm thiệp: Truyền state vào để biết khi nào được click */}
+          <GiftCard 
+            image="/giftcard.png" 
+            isEnabled={isGiftOpen}
+            scale = {110}
+          />
+        </group>
+        {/* ====================================================== */}
+
         {cards.map((card) => (
           <BirthdayCard
             key={card.id}
@@ -312,11 +329,9 @@ function AnimatedScene({
   );
 }
 
-// --- KHỞI TẠO CAMERA CHO CHẾ ĐỘ TỰ DO ---
 function SetupFreeCamera() {
   const camera = useThree((state) => state.camera);
   useEffect(() => {
-    // Đặt vị trí ban đầu
     camera.position.copy(CAMERA_START_POS);
     camera.lookAt(CAMERA_LOOK_AT);
   }, [camera]);
@@ -547,15 +562,13 @@ export default function App() {
           <EnvironmentBackgroundController intensity={0.05 * environmentProgress} />
           <Fireworks isActive={fireworksActive} origin={[0, 10, 0]} />
 
-          {/* 👇 Cài đặt vị trí ban đầu */}
           <SetupFreeCamera />
           
-          {/* 👇 FlyControls: WASD đi, Chuột kéo để nhìn */}
           <FlyControls 
-            movementSpeed={4}  // Tốc độ đi
-            rollSpeed={0.5}    // Tốc độ xoay camera
-            dragToLook={true}  // Bắt buộc giữ chuột mới xoay (để còn click được)
-            makeDefault        // Đặt làm điều khiển chính
+            movementSpeed={4}  
+            rollSpeed={0.5}   
+            dragToLook={true} 
+            makeDefault     
           />
           
         </Suspense>
